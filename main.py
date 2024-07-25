@@ -17,7 +17,6 @@ def wypelnij_bombami(tab):
                 tab[i][j] = "*"
             licznik += 1
 
-
 # def spr_sasiada(tab,i,j):
 #     if tab[i - 1][j - 1]:
 #
