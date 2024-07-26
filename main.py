@@ -119,7 +119,7 @@ def gra():
         #     continue
         plansza[x][y].odkryj()
         wyswietl_plansze(plansza)
-
+        #cosik
         if plansza[x][y].czy_bomba:
             print("**BOOOOM**")
             break
