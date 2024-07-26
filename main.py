@@ -42,6 +42,7 @@ def zlicz_sasiedztwo(tab):
                 except IndexError:
                     continue
 
+
 def tworz_plansze(wymiar):
     plansza = []
     for i in range(wymiar):
@@ -51,9 +52,23 @@ def tworz_plansze(wymiar):
         plansza.append(wiersz)
     return plansza
 
-# def pokaz_zera(tab):
-#     for i in range(len(tab)):
-#         for j in range(len(tab)):
+
+def pokaz_zera(x, y, tab, plansza):
+    kierunki = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    if tab[x][y]:
+        return
+    else:
+        tab[x][y] = True
+    if plansza[x][y].wartosc != -1:
+        plansza[x][y].odkryj()
+
+    if plansza[x][y].wartosc > 0:
+        return
+
+    for i, j in kierunki:
+        if not(x + i >= len(tab) or y + j >= len(tab) or x + i < 0 or y + j < 0):
+            pokaz_zera(x + i, y + j, tab, plansza)
+
 
 class Pole:
     def __init__(self, czy_odkryta, wartosc, czy_bomba):
@@ -63,6 +78,7 @@ class Pole:
 
     def dodaj_bombe(self):
         self.czy_bomba = 1
+        self.wartosc = -1
 
     def dodaj_wartosc(self):
         self.wartosc += 1
@@ -71,7 +87,6 @@ class Pole:
         self.czy_odkryta = 1
 
     def __str__(self):
-        # jesli nieodkryta to wyswietlam []
         if not self.czy_odkryta:
             return "[]"
         if self.czy_odkryta and self.czy_bomba:
@@ -86,18 +101,27 @@ def gra():
     print("podaj wspolrzedne -> od 0,0 do 6,6")
 
     while (True):
-        a = int(input("wsp a = "))
-        b = int(input("wsp b = "))
-        if plansza[a][b].czy_odkryta:
-            print("juz odkryta")
-            continue
-        plansza[a][b].odkryj()
+
+        x = int(input("wsp x = "))
+        y = int(input("wsp y = "))
+        if plansza[x][y].wartosc == 0:
+            tab = []
+            for i in range(7):
+                wiersz = []
+                for j in range(7):
+                    czy_byla = False
+                    wiersz.append(czy_byla)
+                tab.append(wiersz)
+            pokaz_zera(x, y, tab, plansza)
+
+        # if plansza[x][y].czy_odkryta:
+        #     print("juz odkryta")
+        #     continue
+        plansza[x][y].odkryj()
         wyswietl_plansze(plansza)
 
-        if plansza[a][b].czy_bomba:
-            print("przegrales")
+        if plansza[x][y].czy_bomba:
+            print("**BOOOOM**")
             break
-
-
 
 gra()
